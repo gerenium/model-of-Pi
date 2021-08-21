@@ -1,0 +1,48 @@
+import scipy.stats as st
+import matplotlib.pyplot as plt
+import numpy as np
+import random
+import math
+
+L = 0.8
+N_points = 400
+x, y, X2, Y2 = [], [], [], []
+cross, not_cross = 0, 0 
+# Genrating uniform distribution
+X1 = st.uniform.rvs(0, 11 , size = N_points)
+Y1 = st.uniform.rvs(0, 8 , size = N_points)
+
+fig, ax = plt.subplots(figsize=(10,6), dpi=120)
+ax.set_title("Лист бумаги")
+plt.text(0, 8, "L=", fontsize=15)
+plt.text(0.5, 8, L, fontsize=15)
+plt.text(0, 7.5, "N_points=", fontsize=15)
+plt.text(1.9, 7.5, N_points, fontsize=15)
+for i in range(9):
+    ax.hlines(i, 0.2, 10.8, linewidth = 0.1)
+
+for i in range(len(X1)):
+    al = random.uniform(0, 2 * np.pi)
+    X2.append(X1[i] + L * math.cos(al))
+    Y2.append(Y1[i] + L * math.sin(al))
+
+for i in range(len(X1)):
+    x.append(X1[i])
+    x.append(X2[i])
+    y.append(Y1[i])
+    y.append(Y2[i])
+    plt.plot(x,y)
+    x.clear()
+    y.clear()
+
+plt.show()
+
+for i in range(len(X1)):
+    if math.trunc(Y1[i]) - math.trunc(Y2[i]) == 0:
+        not_cross +=1
+    else:
+        cross +=1
+
+p = cross/ (not_cross + cross)
+pi_imp = 2 * L / p
+print('По результатам моделирования', 'при L=', L, 'и N=', N_points, 'Пи=', pi_imp)
